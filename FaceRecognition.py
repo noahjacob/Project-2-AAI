@@ -70,3 +70,12 @@ class FaceRecognition:
         
         with open(self.get_model_file(), "wb") as model:
             pickle.dump((known_face_encodings, known_face_labels), model)
+    
+    def load_model(self):
+        """Load the saved face recognition model."""
+        if os.path.exists(self.get_model_file()):
+            with open(self.get_model_file(), "rb") as f:
+                known_face_encodings, known_face_labels = pickle.load(f)
+            return known_face_encodings, known_face_labels
+        else:
+            raise FileNotFoundError("No saved model found. Please train the model first.")
