@@ -2,6 +2,7 @@
 import cv2
 import os
 import face_recognition
+import pickle
 
 class FaceRecognition:
     def __init__(self):
@@ -66,3 +67,6 @@ class FaceRecognition:
                     known_face_labels.append(label)
                 else:
                     print("No face encodings found in the image.")
+        
+        with open(self.get_model_file(), "wb") as model:
+            pickle.dump((known_face_encodings, known_face_labels), model)
