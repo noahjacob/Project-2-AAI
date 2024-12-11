@@ -4,6 +4,20 @@ import os
 import face_recognition
 
 class FaceRecognition:
+    def __init__(self):
+        self.__dataset_dir = "dataset"
+        self.__model_file = "known_faces.pkl"
+        self.__face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    
+    def get_face_cascade(self):
+        return self.__face_cascade
+
+    def get_model_file(self):
+        return self.__model_file
+    
+    def get_dataset_dir(self):
+        return self.__dataset_dir
+    
     def generate_dataset(name):
         if not os.path.exists("dataset"):
             os.makedirs("dataset")
