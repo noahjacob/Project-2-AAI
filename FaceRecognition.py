@@ -79,3 +79,37 @@ class FaceRecognition:
             return known_face_encodings, known_face_labels
         else:
             raise FileNotFoundError("No saved model found. Please train the model first.")
+        
+
+    def recognize_faces(self, known_face_encodings, known_face_labels):
+        """Recognize faces using the trained model."""
+        video_capture = cv2.VideoCapture(0)
+
+        while True:
+            ret, frame = video_capture.read()
+            rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            face_locations = face_recognition.face_locations(rgb_image)
+            face_encodings_in_image = face_recognition.face_encodings(rgb_image, face_locations)
+
+            if face_encodings_in_image:
+                top, right, bottom, left = face_locations[0]
+                face_encoding = face_encodings_in_image[0]
+
+                matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                name = "Unknown"
+
+                if True in matches:
+                    match_index = matches.index(True)
+                    name = known_face_labels[match_index]
+
+                cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
+                cv2.putText(frame, name, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+
+                cv2.imshow('Face Recognition', frame)
+
+                # Break the loop if the 'q' key is pressed or a face is recognized
+                if cv2.waitKey(1) & 0xFF == ord('q') or name != "Unknown":
+                    break
+
+        return name
