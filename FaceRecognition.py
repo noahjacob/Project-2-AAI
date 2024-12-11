@@ -48,24 +48,21 @@ class FaceRecognition:
             if cv2.waitKey(1) & 0xFF == ord('q') or img_count >= 50:
                 break
 
-    def train_model():
-        known_face_encodings = []
-        known_face_labels = []
-        dataset_dir = "dataset"
+    def train_model(self, known_face_encodings = [], known_face_labels = []):
+        # Train the face recognition model and save it to a file.
+        dataset_dir = self.get_dataset_dir()
         for filename in os.listdir(dataset_dir):
             if filename.endswith(".jpg"):
                 img_path = os.path.join(dataset_dir, filename)
 
                 image = cv2.imread(img_path)
                 rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                
                 face_encodings_in_image = face_recognition.face_encodings(rgb_image)
-                
-                # Assuming only one face in image.
+
                 if face_encodings_in_image:
                     face_encoding = face_encodings_in_image[0]
                     label = filename.split('_')[0]
                     known_face_encodings.append(face_encoding)
                     known_face_labels.append(label)
                 else:
-                    print("No Face Encodings")
+                    print("No face encodings found in the image.")
