@@ -113,3 +113,13 @@ class FaceRecognition:
                     break
 
         return name
+    
+    def update_model_and_train(self):
+        '''Updates and trains the model.'''
+        try:
+            known_faces, known_labels = self.load_model()
+            self.train_model(known_faces, known_labels)
+        except FileNotFoundError as err:
+            print(err)
+            self.train_model()
+            known_faces, known_labels = self.load_model()
