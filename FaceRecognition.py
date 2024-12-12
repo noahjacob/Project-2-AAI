@@ -4,6 +4,7 @@ import os
 import face_recognition
 import face_recognition
 import pickle
+import glob
 
 class FaceRecognition:
     def __init__(self):
@@ -130,3 +131,10 @@ class FaceRecognition:
         known_faces, known_labels = self.load_model()
         name = self.recognize_faces(known_faces, known_labels)
         return name
+    
+    def check_if_registered(self, name):
+        """Check if the person's face is already registered."""
+        dataset_dir = self.get_dataset_dir()
+        pattern = os.path.join(dataset_dir, f"{name}_*.jpg")
+        matches = glob.glob(pattern)
+        return len(matches) > 0
