@@ -124,3 +124,9 @@ class FaceRecognition:
             print(err)
             self.train_model()
             known_faces, known_labels = self.load_model()
+
+    def pipeline(self):
+        """Run the face recognition pipeline."""
+        known_faces, known_labels = self.load_model()
+        name = self.recognize_faces(known_faces, known_labels)
+        return name
