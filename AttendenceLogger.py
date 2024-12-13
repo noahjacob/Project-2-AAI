@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import pandas as pd
 import streamlit as st
+import glob
 
 class AttendenceLogger:
 
@@ -54,3 +55,10 @@ class AttendenceLogger:
         if os.path.exists(self.get_attendance_log_file()):
             return pd.read_csv(self.get_attendance_log_file())
         return None
+    
+    def check_if_registered(self, name):
+        """Check if the person is registered in the dataset."""
+        # Check if the person's face is already registered in the dataset
+        pattern = os.path.join("dataset", f"{name}_*.jpg")
+        matches = glob.glob(pattern)
+        return len(matches) > 0
