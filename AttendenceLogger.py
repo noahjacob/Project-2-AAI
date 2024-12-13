@@ -1,6 +1,8 @@
 # Description: Class file for the attendence logging part of the app.
 import os 
 from datetime import datetime
+import pandas as pd
+import streamlit as st
 
 class AttendenceLogger:
 
@@ -26,3 +28,23 @@ class AttendenceLogger:
         if len(df[(df["Name"] == name) & (df["Date"] == str(today_date))]):
             return True
         return False
+    
+    def log_attendance(self, name):
+        """Log attendance to a CSV file."""
+        timestamp = self.get_current_timestamp()
+        log = {"Name": name}
+        log.update(timestamp)
+
+        if not os.path.exists(self.get_attendance_log_file()):
+            df = pd.DataFrame()
+            df = df._append(log, ignore_index=True)
+            df.to_csv(self.get_attendance_log_file(), index=False)
+            st.write(f"Attendance marked for {name}.")
+        else:
+            df = pd.read_csv(self.get_attendance_log_file())
+            if not self.check_if_marked(name, df):
+                df = df._append(log, ignore_index=True)
+                df.to_csv(self.get_attendance_log_file(), index=False)
+                st.write(f"Attendance marked for {name}.")
+            else:
+                st.write(f"{name} has already been marked present today.")
