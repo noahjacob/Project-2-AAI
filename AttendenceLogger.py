@@ -48,3 +48,9 @@ class AttendenceLogger:
                 st.write(f"Attendance marked for {name}.")
             else:
                 st.write(f"{name} has already been marked present today.")
+
+    def get_attendance_log(self):
+        """Return the attendance log DataFrame."""
+        if os.path.exists(self.get_attendance_log_file()):
+            return pd.read_csv(self.get_attendance_log_file())
+        return None
