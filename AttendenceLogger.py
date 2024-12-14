@@ -20,7 +20,7 @@ class AttendenceLogger:
         date = current_timestamp.date()
         time = current_timestamp.strftime('%I:%M:%S %p')
         day_name = current_timestamp.strftime("%A")
-        return {"Date": date, "Time": time, "Day": day_name}
+        return {"Date": str(date), "Time": time, "Day": day_name}
     
     def check_if_marked(self, name, df):
         """Check if the student is already marked for the day."""
