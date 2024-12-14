@@ -66,3 +66,20 @@ def test_get_current_timestamp(setup_attendance_log):
 
     assert isinstance(timestamp["Time"], str)
     assert isinstance(timestamp["Day"], str)
+
+def test_check_if_marked(setup_attendance_log):
+    data = {
+        "Name": ["John Doe", "Jane Smith"],
+        "Date": [str(datetime.now().date()), str(datetime.now().date())],
+        "Time": ["10:00:00 AM", "10:05:00 AM"],
+        "Day": ["Monday", "Monday"]
+    }
+    df = pd.DataFrame(data)
+
+    logger = AttendenceLogger()
+    
+    # Test that "John Doe" is marked as present for today
+    assert logger.check_if_marked("John Doe", df) == True
+    
+    # Test that a name not in the DataFrame is not marked as present
+    assert logger.check_if_marked("Non Registered Name", df) == False
