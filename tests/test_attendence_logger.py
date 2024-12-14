@@ -83,3 +83,24 @@ def test_check_if_marked(setup_attendance_log):
     
     # Test that a name not in the DataFrame is not marked as present
     assert logger.check_if_marked("Non Registered Name", df) == False
+
+def test_log_attendance(setup_attendance_log):
+    logger = AttendenceLogger()
+    name = "John Doe"
+    
+    # Log attendance for the first time
+    logger.log_attendance(name)
+    
+    # Check if the attendance file is created
+    assert os.path.exists(setup_attendance_log) == True
+    
+    # Check if name is logged.
+    df = pd.read_csv(setup_attendance_log)
+    assert name in df["Name"].values
+    assert len(df) == 1  # Ensure only one attendance entry
+    
+    # Checking if duplicate names get logged for the same day.
+    logger.log_attendance(name)
+    
+    df = pd.read_csv(setup_attendance_log)
+    assert len(df) == 1  # Attendance should not be logged twice for the same person
