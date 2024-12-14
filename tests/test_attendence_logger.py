@@ -44,3 +44,25 @@ def setup_dataset():
         os.remove(dummy_image_path)
     if not os.listdir("dataset"):
         os.rmdir("dataset")
+
+def test_get_current_timestamp(setup_attendance_log):
+    logger = AttendenceLogger()
+    timestamp = logger.get_current_timestamp()
+
+    # Ensure the timestamp contains Date, Time, and Day
+    assert "Date" in timestamp
+    assert "Time" in timestamp
+    assert "Day" in timestamp
+    
+    
+    year = str(datetime.now().year)
+    month = str(datetime.now().month)
+    day = str(datetime.now().day)
+    correct_format = f"{year}-{month}-{day}"
+
+    # Ensure the date is in the correct format
+    assert isinstance(timestamp["Date"], str)
+    assert timestamp["Date"] == correct_format
+
+    assert isinstance(timestamp["Time"], str)
+    assert isinstance(timestamp["Day"], str)
