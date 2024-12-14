@@ -124,3 +124,12 @@ def test_get_attendance_log(setup_attendance_log):
     assert "Date" in df.columns
     assert "Time" in df.columns
     assert "Day" in df.columns
+
+def test_check_if_registered(setup_dataset):
+    logger = AttendenceLogger()
+    
+    # Test with a name that is "registered" (the file was created during setup)
+    name = "John Doe"
+    
+    # Check if the user is "registered"
+    assert logger.check_if_registered(name) == True
