@@ -1,4 +1,6 @@
 # Description: Class file for the attendence logging part of the app.
+# Run using python -m pytest from roo directory
+
 import os 
 from datetime import datetime
 import pandas as pd

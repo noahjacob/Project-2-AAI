@@ -104,3 +104,23 @@ def test_log_attendance(setup_attendance_log):
     
     df = pd.read_csv(setup_attendance_log)
     assert len(df) == 1  # Attendance should not be logged twice for the same person
+
+def test_get_attendance_log(setup_attendance_log):
+    logger = AttendenceLogger()
+    name = "John Doe"
+
+    # Logs the attendance.
+    logger.log_attendance(name)
+
+    # Get the attendance log
+    df = logger.get_attendance_log()
+    
+    # Check if the attendance log is returned as a DataFrame
+    assert isinstance(df, pd.DataFrame)
+    
+    # Ensure the file has at least one record (from the earlier log) and checks if all columns exist.
+    assert len(df) > 0
+    assert "Name" in df.columns
+    assert "Date" in df.columns
+    assert "Time" in df.columns
+    assert "Day" in df.columns
